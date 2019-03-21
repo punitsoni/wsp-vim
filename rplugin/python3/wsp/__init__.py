@@ -3,7 +3,7 @@ import os
 import re
 import pynvim
 
-import prj.util as util
+import wsp.util as util
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
