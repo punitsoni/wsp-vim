@@ -135,17 +135,6 @@ hi MatchParen cterm=underline ctermbg=none ctermfg=yellow
 set cursorline
 "}}}
 
-" -- Import custom functions and commands #custom ---------------------------{{{
-" ---------------------------------------------------------------------------- "
-function! s:source_config(filename) abort
-  execute 'source ' . stdpath('config') . '/' . a:filename
-endfunction
-
-call s:source_config('core_utils.vim')
-
-call s:source_config('google_config.vim')
-"}}}
-
 " -- FZF config #fzfconfig --------------------------------------------------{{{
 " ---------------------------------------------------------------------------- "
 " FZF runs in terminal buffer, Disable the modeline for that buffer.
