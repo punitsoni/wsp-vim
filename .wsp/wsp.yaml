@@ -1,0 +1,11 @@
+# Name of the workspace.
+name: wsp-vim
+
+# List of directories,
+#  - Filesystem absolute paths
+#  - Workspace root relative paths
+dirs:
+  - .
+
+# Included filetypes.
+filetypes: [ 'c', 'cc', 'h', 'py', 'md', 'vim', 'yaml' ]

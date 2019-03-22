@@ -12,62 +12,41 @@
 "                    |   ____| | |____ | |__ |   |__ |__ |
 "                    | |_______|_______|___|___|___|_____|
 "
-
 " -- Plugin Management #plugins ---------------------------------------------{{{
 " ---------------------------------------------------------------------------- "
-call plug#begin(stdpath("data") . "/plugged")
-    " Let plug manage plug.
-    Plug 'junegunn/vim-plug'
-    " Commenting code in various languages.
-    Plug 'tpope/vim-commentary'
-    " Great colorschemes.
-    " Plug 'flazz/vim-colorschemes'
-    " Atom one themes
-    Plug 'rakr/vim-one'
-    " A better status line with themes.
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
-    " insert or remove brackets, parens, quotes etc. in pair
-    "Plug 'jiangmiao/auto-pairs'
-    " Support for editing with surrounding quotes, parens etc.
-    Plug 'tpope/vim-surround'
-    " Support for repeat (.) functionality for plugins.
-    Plug 'tpope/vim-repeat'
-    " Use * to search for selections.
-    Plug 'bronson/vim-visual-star-search'
-    " navigate between vim and tmux panes
-    " Plug 'christoomey/vim-tmux-navigator'
-    " file explorer for vim
-    " Plug 'scrooloose/nerdtree'
-    " utility library for some plugins
-    " Plug 'vim-scripts/DfrankUtil'
-    " project specific settings for vim
-    " Plug 'vim-scripts/vimprj'
-    " Fuzzy File Finder in ~/.fzf and run the install script
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-    Plug 'junegunn/fzf.vim'
-    " Plug 'google/yapf', { 'rtp': 'plugins/vim', 'for': 'python' }
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Path to the plugin location
+let g:plugdir = stdpath("data") . "/plugged"
 
-    " Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+" Begin listing the plugins to load.
+call plug#begin(g:plugdir)
 
-    " Language server protocol
-    " Plug 'prabirshrestha/async.vim'
-    " Plug 'prabirshrestha/vim-lsp'
-
-    " Plug 'Chiel92/vim-autoformat'
-
-    " Plug 'kassio/neoterm'
-
-    " Interface to language server protocol.
-    " Plug 'autozimu/LanguageClient-neovim', {
-    " \ 'branch': 'next',
-    " \ 'do': 'bash install.sh',
-    " \ }
-
-    " Local plugin.
-    Plug '$HOME/work/wsp-vim'
+" Let plug manage plug.
+Plug 'junegunn/vim-plug'
+" Commenting code in various languages.
+Plug 'tpope/vim-commentary'
+" Atom one themes
+Plug 'rakr/vim-one'
+" A better status line with themes.
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+" insert or remove brackets, parens, quotes etc. in pair
+Plug 'jiangmiao/auto-pairs'
+" Support for editing with surrounding quotes, parens etc.
+Plug 'tpope/vim-surround'
+" Support for repeat (.) functionality for plugins.
+Plug 'tpope/vim-repeat'
+" Use * to search for selections.
+Plug 'bronson/vim-visual-star-search'
+" Fuzzy File Finder in ~/.fzf and run the install script
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+" Autocomplete engine for neovim.
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Manage the wsp-vim manually as its in private repo.
+Plug g:plugdir . '/wsp-vim'
+" Initialize all plugins.
 call plug#end()
+
 " enable the plugin settings, required.
 filetype plugin indent on
 "}}}
@@ -87,8 +66,6 @@ set mouse=a
 set ignorecase
 " Do not create swap files
 set noswapfile
-" Set the tab-completion for commands to be more similar to shell
-set wildmode=longest:full,full
 " keep buffers loaded when window closes, required by many plugins.
 set hidden
 " Use spaces instead of tabs.
@@ -109,8 +86,13 @@ set number
 " Use non-retarded locations when opening new splits.
 set splitbelow
 set splitright
-" Ignore these filetypes when searchig/globbing
+" Show completion options in a menu.
+set wildmenu
+" Set the tab-completion for commands to be more similar to shell
+set wildmode=longest:full,full
+" Ignore these files / dirs when searchig/globbing
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pdf,*.msi,*.exe,*.a,*.o,*.bin,*.out,*.deb
+set wildignore+=*/__pycache__/*
 " Clear search-highlight when reloading vimrc.
 noh
 "}}}
@@ -154,9 +136,9 @@ autocmd  FileType fzf set laststatus=0 noshowmode noruler
 
 " -- Deoplete config #deopleteconfig ----------------------------------------{{{
 " ---------------------------------------------------------------------------- "
-" let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 1
 " " Use tab key for completion
-" inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 "}}}
 
 " -- Airline config #airlineconfig ------------------------------------------{{{

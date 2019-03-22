@@ -24,10 +24,14 @@ class NvimHelper(object):
         return (re.match(r'^(yes|y)$', ans, flags=re.IGNORECASE) is not None)
 
 def load_config(configdir):
-    with open(configdir + '/prj.yaml', 'r') as f:
+    with open(configdir + '/config.yaml', 'r') as f:
         return yaml.load(f)
 
 def listfiles(config):
+    log.info(config)
+    dirs = config['dirs']
+    if not dirs:
+        return
     fs = []
     for d in config['dirs']:
         cmd = 'find {} -type f {}'.format(d, ' -or '.join(
@@ -35,7 +39,6 @@ def listfiles(config):
         log.info(cmd)
         fs += sp.check_output(cmd, shell=True).splitlines()
     return fs
-
 
 def listdirs(config):
     cmd = 'find {} -type d'.format(' '.join(config['dirs']))
@@ -48,7 +51,7 @@ def listdirs(config):
 
 
 def get_project_dir():
-    d = (Path(os.getcwd()) / '.project')
+    d = (Path(os.getcwd()) / '.wsp')
     log.info(str(d))
     try:
         if d.is_dir():
@@ -58,20 +61,20 @@ def get_project_dir():
     return None
 
 
-def create_tags_db(config):
-    tags_path = Path('/tmp/prjdb')
-    if (tags_path.exists()):
-        log.info('tags_path exists')
-        return
-    log.info('Creating tags database...')
-    tags_path.mkdir(parents=True, exist_ok=True)
-    cmd = 'gtags --file - ' + str(tags_path)
-    proc = sp.Popen(cmd, shell=True, stdin=sp.PIPE, stdout=sp.PIPE)
-    for name in listfiles(config):
-        proc.stdin.write(name + b'\n')
-    proc.stdin.close()
-    proc.wait()
-    log.info('done.')
+# def create_tags_db(config):
+#     tags_path = Path('/tmp/prjdb')
+#     if (tags_path.exists()):
+#         log.info('tags_path exists')
+#         return
+#     log.info('Creating tags database...')
+#     tags_path.mkdir(parents=True, exist_ok=True)
+#     cmd = 'gtags --file - ' + str(tags_path)
+#     proc = sp.Popen(cmd, shell=True, stdin=sp.PIPE, stdout=sp.PIPE)
+#     for name in listfiles(config):
+#         proc.stdin.write(name + b'\n')
+#     proc.stdin.close()
+#     proc.wait()
+#     log.info('done.')
 
 
 # def find_definition(symbol):

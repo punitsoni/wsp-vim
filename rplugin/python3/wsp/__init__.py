@@ -62,7 +62,7 @@ class WspPlugin(object):
         if (self.echo_not_in_wsp_mode()):
             return
         nv = self.nvim
-        nv.command('split ' + nv.vars['wsp_configdir'] + '/wsp.yaml')
+        nv.command('split ' + nv.vars['wsp_configdir'] + '/config.yaml')
 
     @pynvim.command('WspCreateProject')
     def WspCreateProject(self):
