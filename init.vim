@@ -40,6 +40,8 @@ Plug 'bronson/vim-visual-star-search'
 " Fuzzy File Finder in ~/.fzf and run the install script
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+Plug 'junegunn/goyo.vim'
 " Autocomplete engine for neovim.
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " Manage the wsp-vim manually as its in private repo.
@@ -117,12 +119,14 @@ hi MatchParen cterm=underline ctermbg=none ctermfg=yellow
 set cursorline
 "}}}
 
+" -- Plugin configurations #configplugins -----------------------------------{{{
+" ---------------------------------------------------------------------------- "
 " -- FZF config #fzfconfig --------------------------------------------------{{{
 " ---------------------------------------------------------------------------- "
 " FZF runs in terminal buffer, Disable the modeline for that buffer.
 autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
-  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+      \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 "}}}
 
 " -- Autoformat config #autoformatconfig ------------------------------------{{{
@@ -166,7 +170,10 @@ let g:airline_exclude_filetypes = ['Terminal']
 
 " let g:lsp_diagnostics_enabled = 0
 " let g:lsp_signs_enabled = 1
+"}}}
 
+" Goyo config
+let g:goyo_width = 100
 "}}}
 
 " -- Custom key bindings #keys ----------------------------------------------{{{
@@ -234,9 +241,12 @@ vnoremap < <gv
 " Easy switch to normal mode in terminal
 tnoremap <leader><esc> <C-\><C-n>0
 
-" Format file.
-" nnoremap <leader>ll :LspDocumentFormat<CR>
+" Misc features. <Leader>-m
+" Toggle goyo mode.
+nnoremap <leader>mg :Goyo<cr>
 
+" Reindent file.
+nnoremap <leader>= magg=G`a:echo "File re-indented."<CR>
 
 "}}}
 

@@ -33,16 +33,6 @@ function! s:on_term_open() abort
 endfunction
 autocmd TermOpen * call s:on_term_open()
 
-" List all vim variables in a buffer, sorted by name.
-" function! s:vars_in_buf() abort
-"   C2b let
-"   normal! ggVG
-"   sort
-"   normal! gg
-"   call feedkeys("\<Esc>")
-"   g/^$/d
-" endfunction
-
 " Lists output of a command in fzf. Output is split into a list of
 " sorted lines. Each line is an item in FZF selector.
 " (cmd:String, [callback:FuncRef]) => Nothing
@@ -60,5 +50,23 @@ command! Funcs call s:cmd_output_in_fzf('func')
 
 " Lists all variables in fzf
 command! Vars call s:cmd_output_in_fzf('let')
+
+" Setup for filetype markdown
+function! OnFiletypeMarkdown() abort
+  " execute 'Goyo'
+endfunction
+
+" Use Goyo mode when in markdown files.
+augroup goyo_for_markdown
+  autocmd!
+  autocmd BufEnter *.md Goyo 80x90%
+  autocmd BufLeave *.md Goyo!
+augroup END
+
+" Set filetype correctly for markdown
+augroup on_buf_md
+  autocmd!
+  autocmd BufNewFile,BufRead *.md set filetype=markdown
+augroup END
 
 "}}}
