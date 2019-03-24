@@ -51,17 +51,12 @@ command! Funcs call s:cmd_output_in_fzf('func')
 " Lists all variables in fzf
 command! Vars call s:cmd_output_in_fzf('let')
 
-" Setup for filetype markdown
-function! OnFiletypeMarkdown() abort
-  " execute 'Goyo'
-endfunction
-
 " Use Goyo mode when in markdown files.
-augroup goyo_for_markdown
-  autocmd!
-  autocmd BufEnter *.md Goyo 80x90%
-  autocmd BufLeave *.md Goyo!
-augroup END
+" augroup goyo_for_markdown
+"   autocmd!
+"   autocmd BufEnter *.md Goyo 80x90%
+"   autocmd BufLeave *.md Goyo!
+" augroup END
 
 " Set filetype correctly for markdown
 augroup on_buf_md

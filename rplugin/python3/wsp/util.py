@@ -27,6 +27,17 @@ def load_config(configdir):
     with open(configdir + '/config.yaml', 'r') as f:
         return yaml.load(f)
 
+'''
+Build a find command for excluded paths and included filetypes.
+
+find . \
+    -path exclude1 -prune -or \
+    -path exclude2 -prune -or \
+    ...
+    -name filetype1 -print -or \
+    -name filetype2 -print -or \
+    ...
+'''
 def listfiles(config):
     log.info(config)
     dirs = config['dirs']
@@ -34,8 +45,15 @@ def listfiles(config):
         return
     fs = []
     for d in config['dirs']:
-        cmd = 'find {} -type f {}'.format(d, ' -or '.join(
-                    ['-name "*.' + ext + '"' for ext in config['filetypes']]))
+        excludes = ' -or '.join([
+            '-path "{}" -prune'.format(ex)
+            for ex in config['exclude']
+        ])
+        filetypes = ' -or '.join([
+            '-name "*.' + ft + '" -print'
+            for ft in config['filetypes']
+        ])
+        cmd = 'find . -type f ' + excludes + ' -or ' + filetypes
         log.info(cmd)
         fs += sp.check_output(cmd, shell=True).splitlines()
     return fs

@@ -12,3 +12,4 @@ filetypes: [ 'c', 'cc', 'h', 'py', 'md', 'vim', 'yaml' ]
 
 # Excluded paths.
 exclude:
+  - .git

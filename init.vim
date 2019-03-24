@@ -253,4 +253,3 @@ nnoremap <leader>= magg=G`a:echo "File re-indented."<CR>
 " -- Experimental stuff #experiments ----------------------------------------{{{
 " ---------------------------------------------------------------------------- "
 " Put experimental settings here.
-
