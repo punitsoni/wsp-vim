@@ -45,7 +45,7 @@ call SourceConfig(g:wsp_plugin_dir . '/helpers/core_utils.vim')
 
 " If python remote plugin is correctly loaded. Call the initializaiton function
 " on VimEnter.
-function g:_wsp_init()
+function! g:_wsp_init()
   " if exists('*WspInit')
     call WspInit()
   " endif

@@ -44,6 +44,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
 " Autocomplete engine for neovim.
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Syntax Highlight for javascript
+Plug 'pangloss/vim-javascript'
+" React JSX syntax
+Plug 'mxw/vim-jsx'
 " Manage the wsp-vim manually as its in private repo.
 Plug g:plugdir . '/wsp-vim'
 " Initialize all plugins.
