@@ -1,9 +1,9 @@
-" Absolute path of the plugin root directory.
-let s:plugin_dir = resolve(expand('<sfile>:p:h:h'))
+" Make sure plugin is loaded only once.
+if exists('g:loaded_wsp') | finish | endif
 
-function! g:_wsp_not_available()
-  echo 'wsp: action not available'
-endfunction
+" Absolute path of the plugin root directory.
+let g:wsp_plugin_dir = resolve(expand('<sfile>:p:h:h'))
+
 
 " Default NOP keymappings
 nnoremap <leader>pp :call g:_wsp_not_available()<cr>
@@ -20,18 +20,19 @@ function! g:_wsp_load_keymappings()
     nnoremap <leader>pe :WspEditConfig<cr>
 endfunction
 
-" If python remote plugin is correctly loaded. Call the initializaiton function
-" on VimEnter.
-function! g:_wsp_init()
-  " if exists('*WspInit')
-    " call WspInit()
-  " endif
+function! g:_wsp_fzf_run()
+  let spec = { 'source': 'ls' }
+
+  function! spec.sink(x)
+    echo 'hello ' .. a:x
+    call append(line('$'), 'hello ' .. a:x)
+  endfunction
+
+  call fzf#run(spec)
 endfunction
 
-augroup augrp_wsp_init
-  autocmd!
-  autocmd VimEnter * call g:_wsp_init()
-augroup END
+
+
 
 " Indicates existance of this plugin.
-let g:wsp_plugin_loaded = 1
+let g:loaded_wsp = 1
