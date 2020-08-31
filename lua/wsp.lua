@@ -11,30 +11,44 @@ local function isp(x)
   print(vim.inspect(x))
 end
 
+local function remove_newlines(s)
+  return string.gsub(s, '\n', '')
+end
+
 local function dirname(f)
-  return vim.fn.system('dirname ' .. f .. ' | xargs realpath')
+  return remove_newlines(vim.fn.system('dirname ' .. f .. ' | xargs realpath'))
 end
 
-local function abspath(path)
-  return vim.fn.system('realpath ' .. path)
+-- Converts a path that is relative to refdir to absolute path.
+local function abspath(refdir, relpath)
+  return remove_newlines(vim.fn.system(
+           {'sh', '-c', 'cd ' .. refdir .. ' && realpath ' .. relpath }))
 end
 
-
-local function fzf_select_index(list)
-  -- local t = {}
-  -- for i, s in ipairs(list) do
-  --   t[i] = string.format('%d %s', i-1, s)
-  -- end
-  -- local input = table.concat(t, '\n')
-
-  vim.fn['fzf#run']({
-    source = list,
-    sink = 'echo'
+-- Converts an absolute or relative path to a relative path with reference to refdir.
+local function relpath(refdir, path)
+  return vim.fn.system({
+    'realpath', '--relative-to=', refdir, path
   })
-  -- vim.fn.termopen('fzf --witb-nth 2..', input)
-  -- return vim.fn.system('fzf --witb-nth 2..', input)
 end
 
+local function map(f, list)
+  if (f == nil or list == nil) then
+    return nil
+  end
+  local new_list = {}
+  for i,v in ipairs(list) do
+    new_list[i] = f(v)
+  end
+  return new_list
+end
+
+local function in_quotes(s)
+  return '\'' .. s .. '\''
+end
+
+
+local ui = require('wsp_ui')
 
 -- -------------------------------------------------------------------------- --
 
@@ -51,7 +65,7 @@ function wsp.init()
   -- Find config file and root directory.
   paths = vim.fn.findfile(kConfigFileName, vim.fn.getcwd() .. ';', -1)
   if #paths == 0 then
-    return 
+    return
   end
   config_file = paths[1]
   wsp.root_dir = dirname(config_file)
@@ -59,47 +73,61 @@ function wsp.init()
   print('root_dir = ' .. wsp.root_dir)
   config_json = vim.fn.join(vim.fn.readfile(config_file), '\n')
   wsp.config = vim.fn.json_decode(config_json)
+
+  wsp.config.dirs = map(
+    function(d) return abspath(wsp.root_dir, d) end,
+    wsp.config.dirs)
+
+  wsp.config.dirs_exclude = map(
+    function(d) return abspath(wsp.root_dir, d) end,
+    wsp.config.dirs_exclude)
+
+  isp(wsp.config)
 end
 
 -- Creates a new workspace in directory.
 function wsp.new(dir)
   default_file = vim.g.wsp_plugin_dir .. '/resources' .. '/default_wsp.json'
   config = vim.fn.json_decode(vim.fn.join(vim.fn.readfile(default_file), '\n'))
-
   -- Modify config if needed.
-
   config_str = vim.fn.json_encode(config) .. '\n'
-
   vim.fn.writefile({config_str}, dir .. '/' .. kConfigFileName, 'b')
   print('workspace created at ' .. dir)
 end
 
-local ui = require('wsp_ui')
 
-function wsp.test()
-  print('WSP_TEST\n')
-
-  wsp.init()
-
-  -- isp(wsp.config)
-  -- for _, d in ipairs(wsp.config.dirs) do
-  --   print(abspath(d))
-  -- end
-
-  -- isp(vim.api.nvim_get_keymap('t'))
-
+function wsp.all_files()
+  cmd = table.concat({
+    'find',
+    table.concat(wsp.config.dirs, ' '),
+    '-type f',
+    '\\(',
+    table.concat(map(function(s) return '-not -path '.. in_quotes(s) end,
+                 wsp.config.paths_exclude), ' '),
+    '\\)',
+    '\\(',
+    table.concat(map(function(s) return '-name '.. in_quotes(s) end,
+                 wsp.config.files), ' -or '),
+    '\\)',
+  }, ' ')
+  print('cmd = ', cmd)
   vim.fn['fzf#run']({
-    source = 'ls',
+    source = cmd,
     window = {
       width = 0.8,
       height = 0.5,
     },
-    sink = function(x)
-      vim.fn.append(vim.fn.line('$'), 'hello ' ..  x)
-    end
+    sink = 'edit'
+    -- sink = function(x)
+    --   vim.fn.append(vim.fn.line('$'), 'hello ' ..  x)
+    -- end
   })
+end
 
-  -- ui.open_window()
+function wsp.test()
+  print('WSP_TEST\n')
+  wsp.init()
+  wsp.all_files()
 end
 
 return wsp
@@ -120,6 +148,8 @@ NOTES
 * List workspace files
   - FZF listing of files in a floating window
   - Navigate and open a file
+
+* Navigation within a file. See outline of code in fzf.
 
 --]]
 

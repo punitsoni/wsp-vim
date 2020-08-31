@@ -31,7 +31,10 @@ function! g:_wsp_fzf_run()
   call fzf#run(spec)
 endfunction
 
-
+augroup augrp_wsp_init
+  autocmd!
+  autocmd VimEnter * lua require'wsp'.init()
+augroup END
 
 
 " Indicates existance of this plugin.
