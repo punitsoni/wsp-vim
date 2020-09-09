@@ -1,0 +1,26 @@
+{
+  "dirs": [
+    "./"
+  ],
+
+  "dirs_exclude": [
+    "./build"
+  ],
+
+  "paths_exclude": [
+    "*/node_modules/*",
+    "*/.git/*"
+  ],
+
+  "files": [
+    "*.c",
+    "*.cc",
+    "*.h",
+    "*.md",
+    "*.txt",
+    "*.vim",
+    "*.py",
+    "*.lua"
+  ]
+}
+

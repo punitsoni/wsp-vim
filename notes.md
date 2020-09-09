@@ -1,3 +1,35 @@
+---
+
+Use built-in LUA interface for implementing the wsp plugin.
+
+Each workspace contains a list of directories which is 
+
+
+---
+
+Redefining the context
+
+Name of this project is now wsp-vim. Making (neo)vim a great workspace tool.
+Things will revolve around a concept of "Workspace" which is a root directory
+which provides a context in which the editor is used. This terminology is inline
+with what other editors / IDEs call workspace.
+
+Reducing the scope
+
+We are focusing on a clean user experience instead of adding a lot of
+half-functioning "advanced" features. Main goal is to make vim a place where you
+can live and navigate the files in your workspace efficiently. Focus is more on
+editing and navigations rather than integration with all development tools. Such
+integration might be a good idea to add in future, once we have a solid
+foundation for the editing experience.
+
+This project will provide a complete setup of neovim. General init.vim
+configuration along with advanced features implemented in plugin. Some of the
+plugin features are implemened in python.
+
+---
+
+
 # prj
 
 Vim plugin to manage projects with (very) large codebase.
@@ -146,30 +178,5 @@ prj plugin to be just about file navigation at this time. We could use the term
 workspace instead of project in this context. As, a single individual checkout
 of a source repo where we do all the work (development, build, test etc) is a
 workspace. Term project is not very clear.
-
----
-
-Redefining the context
-
-Name of this project is now wsp-vim. Making (neo)vim a great workspace tool.
-Things will revolve around a concept of "Workspace" which is a root directory
-which provides a context in which the editor is used. This terminology is inline
-with what other editors / IDEs call workspace.
-
-Reducing the scope
-
-We are focusing on a clean user experience instead of adding a lot of
-half-functioning "advanced" features. Main goal is to make vim a place where you
-can live and navigate the files in your workspace efficiently. Focus is more on
-editing and navigations rather than integration with all development tools. Such
-integration might be a good idea to add in future, once we have a solid
-foundation for the editing experience.
-
-This project will provide a complete setup of neovim. General init.vim
-configuration along with advanced features implemented in plugin. Some of the
-plugin features are implemened in python.
-
-
-
 
 
