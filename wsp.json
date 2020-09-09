@@ -1,17 +1,26 @@
 {
   "dirs": [
+    "./"
   ],
 
   "dirs_exclude": [
+    "./build"
+  ],
+
+  "paths_exclude": [
+    "*/node_modules/*",
+    "*/.git/*"
   ],
 
   "files": [
-  ],
-
-  "files_exclude": [
-  ],
-
-  "b": "HELLO",
-  "c": 3.1415
+    "*.c",
+    "*.cc",
+    "*.h",
+    "*.md",
+    "*.txt",
+    "*.vim",
+    "*.py",
+    "*.lua"
+  ]
 }
 

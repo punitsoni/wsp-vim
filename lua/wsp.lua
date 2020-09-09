@@ -95,7 +95,7 @@ function wsp.new(dir)
   print('workspace created at ' .. dir)
 end
 
-
+-- Select from all project files using fzf.
 function wsp.all_files()
   cmd = table.concat({
     'find',
@@ -118,9 +118,6 @@ function wsp.all_files()
       height = 0.5,
     },
     sink = 'edit'
-    -- sink = function(x)
-    --   vim.fn.append(vim.fn.line('$'), 'hello ' ..  x)
-    -- end
   })
 end
 
@@ -136,11 +133,14 @@ return wsp
 
 WORKFLOW
 
+* Test from command-line
+vi -c "lua require'wsp'.test()
+
 * Reload this module and run test() function.
-:lua basics.reload'wsp'.test()
+:lua bs.reload'wsp'.test()
 
 
-NOTES
+TASKS
 
 * Create a new workspace in a directory
   - create new wsp.json file with default settings
@@ -150,6 +150,22 @@ NOTES
   - Navigate and open a file
 
 * Navigation within a file. See outline of code in fzf.
+
+NOTES
+
+clangd is c++ language server implementation.
+brew install llvm
+
+---
+coc.nvim provides a good way to manage LSP configurations for workspaces.
+You can have .vim/coc-settings.json in your workspace rootdir.
+
+To open global coc config
+:CocConfig
+
+To open workspace coc config
+:CocLocalConfig
+
 
 --]]
 
